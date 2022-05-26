@@ -1,0 +1,47 @@
+@mixin es {
+    @media screen and (max-width: map-get($breakpoints, 'es')) {
+        @content;
+    }
+}
+
+@mixin sm {
+    @media screen and (max-width: map-get($breakpoints, 'sm')) {
+        @content;
+    }
+}
+
+@mixin md {
+    @media screen and (max-width: map-get($breakpoints, 'md')) {
+        @content;
+    }
+}
+
+@mixin mdMin {
+    @media screen and (min-width: map-get($breakpoints, "md")) {
+        @content;
+    }
+}
+
+@mixin lg {
+    @media screen and (max-width: map-get($breakpoints, 'lg')) {
+        @content;
+    }
+}
+
+@mixin lgMin {
+    @media screen and (min-width: map-get($breakpoints, 'lg')) {
+        @content;
+    }
+}
+
+@mixin xl {
+    @media screen and (max-width: map-get($breakpoints, 'xl')) {
+        @content;
+    }
+}
+
+@mixin customBreakpoint ($screen) {
+    @media screen and (max-width: #{$screen}#{'px'}) {
+        @content;
+    }
+}

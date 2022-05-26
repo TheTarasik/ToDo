@@ -1,0 +1,22 @@
+.content {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 100%;
+    min-height: 100%;
+    background-color: var(--background-primary);
+    &-title {
+        padding: 35px;
+        text-align: center;
+        h1 {
+            color: var(--text-normal);
+            font-style: normal;
+            font-weight: 600;
+            font-size: 67px;
+            line-height: 64px;
+        }
+    }
+}
+
+@import './content/home';
+@import './content/tasks-list';

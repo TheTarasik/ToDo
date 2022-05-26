@@ -1,0 +1,23 @@
+@include font-face(
+  'Montserrat',
+  '../../fonts/Montserrat/Montserrat-Regular',
+  400
+);
+
+@include font-face(
+  'Montserrat',
+  '../../fonts/Montserrat/Montserrat-Medium',
+  500
+);
+
+@include font-face(
+  'Montserrat',
+  '../../fonts/Montserrat/Montserrat-SemiBold',
+  600
+);
+
+@include font-face(
+  'Montserrat',
+  '../../fonts/Montserrat/Montserrat-Bold',
+  700
+);

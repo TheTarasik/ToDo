@@ -1,0 +1,36 @@
+.input-primary {
+    &.input-wrapper {
+        border: 1px solid transparent;
+        border-radius: 3px;
+        overflow: hidden;
+        .input-wrapper__content {
+            .input {
+                background-color: var(--input-background);
+                padding: 12px 20px;
+                color: var(--text-normal);
+                font-style: normal;
+                font-weight: 400;
+                font-size: 14px;
+                line-height: 17px;
+                &::placeholder {
+                    color: var(--input-placeholder-text);
+                }
+            }
+        }
+        &__status-code {
+            &__1 {
+                .input-wrapper__content {
+                    .input {
+                        border: 1px solid #ff1744;
+                        color: #ff1744;
+                    } 
+                }
+                .input-wrapper__status-message {
+                    p {
+                        color: #ff1744;
+                    }
+                }
+            }
+        }
+    }
+}

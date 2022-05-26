@@ -1,0 +1,11 @@
+.pagination {
+    display: flex;
+    justify-content: center;
+}
+
+.pagination-list {
+    display: flex;
+    list-style: none;
+}
+
+@import './pagination/primary.scss';

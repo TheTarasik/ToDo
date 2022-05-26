@@ -1,0 +1,158 @@
+.tasks-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    height: 100%;
+    list-style: none;
+    &::-webkit-scrollbar {
+        width: 3px;
+    }
+    &::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+        background: var(--interactive-normal);
+    }
+    &__item {
+        .spoiler {
+            &-header {
+                .task-list__item-spoiler__header {
+                    display: flex;
+                    position: relative;
+                    z-index: 1;
+                    pointer-events: none;
+                    &-status {
+                        padding: 2px 0;
+                        span {
+                            display: block;
+                            height: 100%;
+                            border-right: 5px solid var(--background-modifier-active);
+                            border-radius: 0 10px 10px 0;
+                            &.success {
+                                border-color: var(--goblin);
+                            }
+                        }
+                    }
+                    &-title {
+                        margin: 0 0 0 10px;
+                        padding: 10px 0;
+                        pointer-events: all;
+                        span {
+                            font-style: normal;
+                            font-weight: 600;
+                            font-size: 16px;
+                            line-height: 19px;
+                        }
+                    }
+                    &-time {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        margin: 0 10px 0 auto;
+                        span {
+                            font-style: normal;
+                            font-weight: 500;
+                            font-size: 15px;
+                            line-height: 18px;
+                        }
+                    }
+                    &-action {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        margin: 0 10px 0 0;
+                        pointer-events: all;
+                        .dropdown {
+                            &-active {
+                                .dropdown-action {
+                                    .dots-1 {
+                                        path {
+                                            fill: var(--interactive-active);
+                                        }
+                                    }
+                                }
+                            }
+                            &-action {
+                                .dots-1 {
+                                    display: block;
+                                    width: 25px;
+                                    height: 25px;
+                                    min-width: 25px;
+                                    &:hover {
+                                        path {
+                                            fill: var(--interactive-hover);
+                                        }
+                                    }
+                                    path {
+                                        fill: var(--interactive-normal);
+                                        transition: fill .5s ease;
+                                    }
+                                }
+                            }
+                            &-content {
+                                display: flex;
+                                align-items: center;
+                                .task-list__item-spoiler__header-action__edit {
+                                    margin: 0 5px;
+                                    .pencil-1 {
+                                        display: block;
+                                        width: 25px;
+                                        height: 25px;
+                                        min-width: 25px;
+                                        &:hover {
+                                            path {
+                                                opacity: .8;
+                                            }
+                                        }
+                                        path {
+                                            fill: var(--steelblue);
+                                            transition: opacity .3s ease;
+                                        }
+                                    }
+                                }
+                                .task-list__item-spoiler__header-action__delete {
+                                    margin: 5px;
+                                    .trash-1 {
+                                        display: block;
+                                        width: 25px;
+                                        height: 25px;
+                                        min-width: 25px;
+                                        &:hover {
+                                            path, line {
+                                                opacity: .8;
+                                            }
+                                        }
+                                        path, line {
+                                            stroke: var(--carnation);
+                                            transition: opacity .3s ease;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            &-content {
+                .task-list__item-spoiler__content {
+                    &-description {
+                        p, span {
+                            color: var(--text-normal);
+                        }
+                        p, span {
+                            font-style: normal;
+                            font-weight: 400;
+                        }
+                        p, span {
+                            font-size: 16px;
+                            line-height: 19px;
+                        }
+                        .description-unset {
+                            color: var(--text-muted);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

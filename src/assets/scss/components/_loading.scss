@@ -1,0 +1,8 @@
+.loading-1 {
+    width: 80px;
+    height: 80px;
+    min-width: 80px;
+    circle {
+        stroke: var(--loading-primary);
+    }
+}

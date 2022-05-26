@@ -1,0 +1,44 @@
+@import 'vars';
+@import './mixins/font-face';
+@import './mixins/media';
+@import 'libs';
+@import 'fonts';
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-primary);
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background-color: #000; // Debug
+}
+
+.todo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    height: 100vh;
+    padding: 15px;
+}
+
+.todo-wrapper {
+    display: flex;
+    width: 100%;
+    max-width: 690px;
+    min-height: 600px;
+    margin: auto;
+}
+
+@import './elements/inputs';
+@import './elements/spoiler';
+@import './elements/dropdown';
+@import './elements/pagination';
+
+@import './components/menu';
+@import './components/content';
+@import './components/loading';
+@import './animations';

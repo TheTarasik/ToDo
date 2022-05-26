@@ -1,0 +1,44 @@
+.input {
+    display: block;
+    background: unset;
+    border: unset;
+    outline: none;
+}
+
+.input-placeholder__center {
+    &::placeholder {
+        text-align: center;
+    }
+}
+
+.input-wrapper__label {
+    display: block;
+    margin: 0 0 8px 0;
+    color: #3c3c3c;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+    span {
+        color: #eb5757;
+    }
+}
+
+.input-wrapper__content {
+    display: flex;
+    position: relative;
+}
+
+.input-wrapper__status-message {
+    height: 20px;
+    margin: 2px 0 0 0;
+    span {
+        font-style: normal;
+        font-weight: 400;
+        font-size: 12px;
+        line-height: 12px;
+    }
+}
+
+@import './inputs/primary.scss';

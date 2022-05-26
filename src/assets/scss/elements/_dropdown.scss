@@ -1,0 +1,19 @@
+.dropdown {
+    position: relative;
+    &-active {
+        .dropdown-content {
+            transform: scale(1) translateX(-50%);
+            opacity: 1;
+        }
+    }
+    &-content {
+        position: absolute;
+        left: 50%;
+        background-color: var(--background-primary);
+        border: 1px solid var(--dropdown-content-border);
+        border-radius: 5px;
+        transform: scale(.9) translateX(-50%);
+        transition: transform .3s ease, opacity .2s ease;
+        opacity: 0;
+    }
+}

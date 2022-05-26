@@ -1,0 +1,41 @@
+.theme-light {
+    --primary: #8c2cf5;
+    --carnation: #ef585b;
+    --goblin: #2d7d46;
+    --meteor: #cb8515;
+    --steelblue: #448cc4;
+
+    --interactive-normal: #4f5660;
+    --interactive-hover: #2e3338;
+    --interactive-active: #060607;
+    --interactive-muted: #c7ccd1;
+
+    --background-primary: #fff;
+    --background-secondary: #f2f3f5;
+
+    --background-modifier-hover: rgba(106,116,128,0.16);
+    --background-modifier-active: rgba(106,116,128,0.2);
+    --background-modifier-selected: rgba(106,116,128,0.24);
+    --background-modifier-accent: rgba(106,116,128,0.24);
+
+    --input-background: #e3e5e8;
+    --input-border: #a0a0a0;
+    --input-placeholder-text: #5e6772;
+    --input-focus: #5e6772;
+
+    --spoiler-border: #a0a0a0;
+
+    --dropdown-content-border: #a0a0a0;
+
+    --pagination-item-background: #fff;
+    --pagination-item-background-active: #fff;
+    --pagination-item-border: #a0a0a0;
+    --pagination-item-border-active: #8c2cf5;
+
+    --loading-primary: #8c2cf5;
+}
+
+@import './vars/text-colors';
+@import './vars/fonts';
+
+@import './vars/components/menu';
