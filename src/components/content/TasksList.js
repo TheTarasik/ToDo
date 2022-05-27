@@ -23,6 +23,7 @@ const TasksList = ({ tasks, loadingCallback }) => {
                 method: 'DELETE'
             });
 
+            // Must return from backend the status true/false
             if (deleteTask.status !== 200) {
                 return console.log('Something went wrong!')
             }
