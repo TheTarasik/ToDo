@@ -5,7 +5,7 @@ import {
     useLocation
   } from 'react-router-dom';
   import { CSSTransition, TransitionGroup } from 'react-transition-group'
-import { toDoPublicRoutes } from './data/routes';
+import { toDoPublicRoutes } from '../data/routes';
 
 const Content = () => {
 

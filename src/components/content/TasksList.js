@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { setPageCount, setTasks } from '../../redux/reducers/todo.js';
 import useAPI from '../../hooks/useAPI.js';
 import config from '../../config.js';
+import taskStatus from '../../data/taskStatus.js';
 import Spoiler from '../elements/Spoiler';
 import Dropdown from '../elements/Dropdown';
 import Dots1 from '../../assets/images/icons/Dots-1';
@@ -16,6 +17,8 @@ const TasksList = ({ tasks }) => {
 
     const taskDelete = async (id) => {
         try {
+            dispatch(setTasks(null));
+
             const deleteTask = await apiPublic(`/tasks/${id}`, {
                 method: 'DELETE'
             });
@@ -44,7 +47,7 @@ const TasksList = ({ tasks }) => {
                             header={(
                                 <div className="task-list__item-spoiler__header">
                                     <div className="task-list__item-spoiler__header-status">
-                                        <span className="success"></span>
+                                        <span className={taskStatus[task.is_status]?.className}></span>
                                     </div>
                                     <div className="task-list__item-spoiler__header-title">
                                         <span>{task.title}</span>

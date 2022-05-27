@@ -1,9 +1,9 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { useSelector, useDispatch } from 'react-redux';
 import { showMenu } from '../redux/reducers/menu';
-import { toDoPublicRoutes } from './data/routes';
-import { NavLink } from 'react-router-dom';
+import { toDoPublicRoutes } from '../data/routes';
 
 const Menu = () => {
 

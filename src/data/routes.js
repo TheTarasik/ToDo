@@ -1,5 +1,5 @@
-import Home from '../content/Home';
-import Archive from '../content/Archive';
+import Home from '../components/content/Home';
+import Archive from '../components/content/Archive';
 
 export const toDoPublicRoutes = [
     {

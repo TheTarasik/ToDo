@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { transitionParser } from '../../functions/transition-parser';
+import { transitionParser } from '../../functions/transitionParser';
 
 const Spoiler = ({ children, header, active = false }) => {
 

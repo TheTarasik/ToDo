@@ -10,6 +10,20 @@ import Pagination from '../elements/Pagination';
 import TasksList from './TasksList';
 import Loading1 from '../../assets/images/loadings/Loading-1';
 
+const highlightWithRanges = [
+    {
+        "react-datepicker__day--highlighted-custom-1": [
+            new Date(),
+            new Date(1653313103 * 1000)
+        ],
+    },
+    {
+        "react-datepicker__day--highlighted-custom-2": [
+            new Date()
+        ],
+    },
+];
+
 const Home = () => {
 
     const [date, setDate] = useState(new Date());
@@ -48,38 +62,23 @@ const Home = () => {
 
     useEffect(() => {
         let { page } = params;
-        console.log(storeToDo.pageCount)
-        if (!page || storeToDo.pageCount === null) return;
-
         page = Number(page);
 
+        if (!page || !storeToDo.pageCount) return;
+
         if (page > storeToDo.pageCount) {
-            console.log('there')
+            page = storeToDo.pageCount;
+            setCurrentPage(page);
+            setPagination(page);
             return setSearchParams({
                 ...params,
-                page: 1
+                page
             });
         }
 
-        if (page) {
-            setCurrentPage(page);
-            setPagination(page);
-        }
+        setCurrentPage(page);
+        setPagination(page);
     }, [storeToDo.pageCount]);
-
-    const highlightWithRanges = [
-        {
-            "react-datepicker__day--highlighted-custom-1": [
-                new Date(),
-                new Date(1653313103 * 1000)
-            ],
-        },
-        {
-            "react-datepicker__day--highlighted-custom-2": [
-                new Date()
-            ],
-        },
-    ];
 
     useEffect(() => {
         if (datePickerRef.current) {
@@ -108,7 +107,7 @@ const Home = () => {
             to: page * config.pagination.pageToShow
         });
     };
-
+    
     return (
         <div className="home">
             <div className="home-content">
@@ -121,7 +120,7 @@ const Home = () => {
                                     onClick={() => setDatePickerShow((prev) => !prev)} 
                                     className="input" 
                                     spellCheck="false" 
-                                    value={dayjs(date).format('YYYY-MM-DD HH:mm:ss')} 
+                                    value={dayjs(date).format('YYYY-MM-DD')} 
                                     readOnly 
                                 />
                             </div>
@@ -148,11 +147,17 @@ const Home = () => {
                             <Loading1 />
                         </div>
                         :
-                        <TasksList tasks={tasksPagination} />
+                        tasksPagination.length ?
+                            <TasksList tasks={tasksPagination} />
+                            :
+                            <div className="home-content__tasks-not__found">
+                                <p>Sorry</p>
+                                <p>We couldn't find anything 😔</p>
+                            </div>
                     }
                 </div>
-                <div className="home-content__pagination">
-                    {storeToDo.pageCount > 1 &&
+                {storeToDo.pageCount > 1 &&
+                    <div className="home-content__pagination">
                         <Pagination 
                             className="pagination-primary"
                             pageCount={storeToDo.pageCount} 
@@ -162,8 +167,8 @@ const Home = () => {
                                 buttonsShow: 5
                             }} 
                         />
-                    }
-                </div>
+                    </div>
+                }
             </div>
         </div>
     );
