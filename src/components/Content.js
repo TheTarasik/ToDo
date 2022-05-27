@@ -17,7 +17,7 @@ const Content = () => {
                 <h1>ToDo List</h1>
             </div>
             <TransitionGroup component={null}>
-                <CSSTransition key={location.key} classNames="content-fade-animation" timeout={300}>
+                <CSSTransition key={location.pathname} classNames="content-fade-animation" timeout={300}>
                     <Routes location={location}>
                         {toDoPublicRoutes.map(({ path, element }) => (
                             <Route key={path} path={path} element={element} />

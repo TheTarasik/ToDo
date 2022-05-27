@@ -1,16 +1,16 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { setTasks } from '../../redux/reducers/todo';
-import useAPI from '../../hooks/useAPI';
+import { setTasks, setPageCount } from '../../redux/reducers/todo';
 import DatePicker from 'react-datepicker';
 import dayjs from 'dayjs';
+import useAPI from '../../hooks/useAPI';
+import config from '../../config';
 import Pagination from '../elements/Pagination';
 import TasksList from './TasksList';
 import Loading1 from '../../assets/images/loadings/Loading-1';
 
 const Home = () => {
-
-
 
     const [date, setDate] = useState(new Date());
     const [datePickerMaxHeight, setDatePickerMaxHeight] = useState(0);
@@ -18,19 +18,54 @@ const Home = () => {
 
     const [tasksPaginationOffset, setTasksPaginationOffset] = useState({
         from: 0,
-        to: 5
+        to: config.pagination.pageToShow
     });
 
-    const [pageCount, setPageCount] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
 
     const datePickerRef = useRef(null);
-    const pageToShow = useRef(5);
 
     const storeToDo = useSelector((state) => state.todo);
 
     const dispatch = useDispatch();
+    const [searchParams, setSearchParams] = useSearchParams();
     const { apiPublic } = useAPI();
+
+    const params = Object.fromEntries([...searchParams]);
+
+    useEffect(() => {
+        apiPublic('/tasks') 
+            .then((data) => {
+                const { data: tasks } = data;
+
+                dispatch(setPageCount(Math.ceil(tasks.length / config.pagination.pageToShow)));
+                dispatch(setTasks(tasks));
+            })
+            .catch((e) => {
+                console.log(e);
+            });
+    }, []);
+
+    useEffect(() => {
+        let { page } = params;
+        console.log(storeToDo.pageCount)
+        if (!page || storeToDo.pageCount === null) return;
+
+        page = Number(page);
+
+        if (page > storeToDo.pageCount) {
+            console.log('there')
+            return setSearchParams({
+                ...params,
+                page: 1
+            });
+        }
+
+        if (page) {
+            setCurrentPage(page);
+            setPagination(page);
+        }
+    }, [storeToDo.pageCount]);
 
     const highlightWithRanges = [
         {
@@ -52,22 +87,6 @@ const Home = () => {
         }
     }, [datePickerRef]);
 
-    useEffect(() => {
-        apiPublic('/tasks') 
-            .then((data) => {
-                let { data: tasks } = data;
-                
-                setPageCount(Math.ceil(tasks.length / pageToShow.current));
-                dispatch(setTasks(tasks));
-            })
-            .catch((e) => {
-                console.log(e);
-            })
-            .finally(() => {
-
-            });
-    }, []);
-
     const tasksPagination = useMemo(() => {
         if (storeToDo.tasks) {
             return storeToDo.tasks.slice(tasksPaginationOffset.from, tasksPaginationOffset.to);
@@ -75,10 +94,18 @@ const Home = () => {
     }, [storeToDo.tasks, tasksPaginationOffset]);
 
     const changePage = (page) => {
+        setSearchParams({
+            ...params,
+            page
+        });
         setCurrentPage(page);
+        setPagination(page);
+    };
+
+    const setPagination = (page) => {
         setTasksPaginationOffset({
-            from: page * pageToShow.current - pageToShow.current,
-            to: page * pageToShow.current
+            from: page * config.pagination.pageToShow - config.pagination.pageToShow,
+            to: page * config.pagination.pageToShow
         });
     };
 
@@ -125,10 +152,10 @@ const Home = () => {
                     }
                 </div>
                 <div className="home-content__pagination">
-                    {pageCount > 1 &&
+                    {storeToDo.pageCount > 1 &&
                         <Pagination 
                             className="pagination-primary"
-                            pageCount={pageCount} 
+                            pageCount={storeToDo.pageCount} 
                             currentPage={currentPage} 
                             changePage={changePage}
                             options={{

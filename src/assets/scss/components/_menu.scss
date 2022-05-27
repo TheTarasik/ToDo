@@ -120,7 +120,7 @@
                         width: 100%;
                         top: 50%;
                         margin: 0 0 0 -100%;
-                        border: 1px solid var(--interactive-active);
+                        border-top: 1px solid var(--interactive-active);
                         transform: translateX(-100%) translateY(-50%);
                         transition: all .5s ease;
                     }
