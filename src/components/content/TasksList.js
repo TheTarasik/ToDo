@@ -10,14 +10,14 @@ import Dots1 from '../../assets/images/icons/Dots-1';
 import Pencil1 from '../../assets/images/icons/Pencil-1';
 import Trash1 from '../../assets/images/icons/Trash-1';
 
-const TasksList = ({ tasks }) => {
+const TasksList = ({ tasks, loadingCallback }) => {
 
     const dispatch = useDispatch();
     const { apiPublic } = useAPI();
 
     const taskDelete = async (id) => {
         try {
-            dispatch(setTasks(null));
+            loadingCallback(true);
 
             const deleteTask = await apiPublic(`/tasks/${id}`, {
                 method: 'DELETE'
@@ -35,6 +35,8 @@ const TasksList = ({ tasks }) => {
             dispatch(setTasks(tasks));
         } catch (e) {
             console.log(e);
+        } finally {
+            loadingCallback(false);
         }
     };
 

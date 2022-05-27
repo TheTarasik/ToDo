@@ -1,7 +1,7 @@
 import { createAction, createReducer } from '@reduxjs/toolkit';
 
 const initialState = {
-     tasks: null,
+     tasks: [],
      pageCount: null
 };
 

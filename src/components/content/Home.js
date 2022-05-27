@@ -35,7 +35,9 @@ const Home = () => {
         to: config.pagination.pageToShow
     });
 
-    const [currentPage, setCurrentPage] = useState(1);
+    const [currentPage, setCurrentPage] = useState(null);
+
+    const [tasksLoading, setTaskLoading] = useState(true);
 
     const datePickerRef = useRef(null);
 
@@ -57,6 +59,9 @@ const Home = () => {
             })
             .catch((e) => {
                 console.log(e);
+            })
+            .finally(() => {
+                setTaskLoading(false);
             });
     }, []);
 
@@ -64,20 +69,14 @@ const Home = () => {
         let { page } = params;
         page = Number(page);
 
-        if (!page || !storeToDo.pageCount) return;
+        if (!storeToDo.pageCount) return;
 
-        if (page > storeToDo.pageCount) {
-            page = storeToDo.pageCount;
-            setCurrentPage(page);
-            setPagination(page);
-            return setSearchParams({
-                ...params,
-                page
-            });
+        if (isNaN(page) || page <= 0) {
+            delete params.page;
+            return setSearchParams(params);
         }
 
-        setCurrentPage(page);
-        setPagination(page);
+        changePage(page > storeToDo.pageCount ? storeToDo.pageCount : page);
     }, [storeToDo.pageCount]);
 
     useEffect(() => {
@@ -86,7 +85,7 @@ const Home = () => {
         }
     }, [datePickerRef]);
 
-    const tasksPagination = useMemo(() => {
+    const tasks = useMemo(() => {
         if (storeToDo.tasks) {
             return storeToDo.tasks.slice(tasksPaginationOffset.from, tasksPaginationOffset.to);
         }
@@ -107,7 +106,7 @@ const Home = () => {
             to: page * config.pagination.pageToShow
         });
     };
-    
+
     return (
         <div className="home">
             <div className="home-content">
@@ -142,13 +141,16 @@ const Home = () => {
                     </div>
                 </div>
                 <div className="home-content__tasks">
-                    {storeToDo.tasks === null ?
+                    {tasksLoading ?
                         <div className="home-content__tasks-loading">
                             <Loading1 />
                         </div>
                         :
-                        tasksPagination.length ?
-                            <TasksList tasks={tasksPagination} />
+                        tasks.length ?
+                            <TasksList 
+                                tasks={tasks} 
+                                loadingCallback={(status) => setTaskLoading(status)} 
+                            />
                             :
                             <div className="home-content__tasks-not__found">
                                 <p>Sorry</p>
@@ -156,8 +158,8 @@ const Home = () => {
                             </div>
                     }
                 </div>
-                {storeToDo.pageCount > 1 &&
-                    <div className="home-content__pagination">
+                {storeToDo.pageCount > 1 && currentPage !== null &&
+                    <div className="home-content__pagination" style={tasksLoading ? { opacity: .5, pointerEvents: 'none' } : null}>
                         <Pagination 
                             className="pagination-primary"
                             pageCount={storeToDo.pageCount} 
