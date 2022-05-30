@@ -119,7 +119,7 @@ const Home = () => {
                 const getHightlight = (hightlight) => {
                     return Object.values(a.find((a) => a[`day-hightlight__${hightlight}`]))[0];
                 };
-
+                
                 if (dates.length <= 5) {
                     getHightlight(1).push(...dates);
                 } else if (dates.length >= 5 && dates.length <= 10) {
@@ -171,7 +171,7 @@ const Home = () => {
                                     className="input" 
                                     spellCheck="false" 
                                     value={dayjs(datePickerDate).format('YYYY-MM-DD')} 
-                                    readOnly 
+                                    readOnly
                                 />
                             </div>
                         </div>
