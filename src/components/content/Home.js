@@ -12,7 +12,7 @@ import Loading1 from '../../assets/images/loadings/Loading-1';
 
 const Home = () => {
 
-    const [date, setDate] = useState(new Date());
+    const [datePickerDate, setDatePickerDate] = useState(new Date());
     const [datePickerMaxHeight, setDatePickerMaxHeight] = useState(0);
     const [datePickerShow, setDatePickerShow] = useState(false);
 
@@ -30,8 +30,8 @@ const Home = () => {
     const storeToDo = useSelector((state) => state.todo);
 
     const dispatch = useDispatch();
-    const [searchParams, setSearchParams] = useSearchParams();
     const { apiPublic } = useAPI();
+    const [searchParams, setSearchParams] = useSearchParams();
 
     const params = Object.fromEntries([...searchParams]);
 
@@ -40,7 +40,6 @@ const Home = () => {
             .then((data) => {
                 const { data: tasks } = data;
 
-                dispatch(setPageCount(Math.ceil(tasks.length / config.pagination.pageToShow)));
                 dispatch(setTasks(tasks));
             })
             .catch((e) => {
@@ -52,20 +51,24 @@ const Home = () => {
     }, []);
 
     useEffect(() => {
-        let { page } = params;
+        let { page, date } = params;
 
         page = Number(page);
 
-        if (!storeToDo.pageCount) return;
-
-        if (isNaN(page) || page <= 0) {
-            delete params.page;
-            changePage(1);
-            return setSearchParams(params);
+        if (storeToDo.pageCount) {
+            if (isNaN(page) || page <= 0) {
+                delete params.page;
+                changePage(1);
+                return setSearchParams(params);
+            }
+            changePage(page > storeToDo.pageCount ? storeToDo.pageCount : page);
         }
 
-        changePage(page > storeToDo.pageCount ? storeToDo.pageCount : page);
-    }, [storeToDo.pageCount]);
+        if (date) {
+            date = new Date(date.replace(/(\d{2})\.(\d{2})\.(\d{4})/,'$3-$2-$1'));
+            setDatePickerDate(date.toString() === 'Invalid Date' ? new Date() : date);
+        }
+    }, [searchParams, storeToDo.pageCount]);
 
     useEffect(() => {
         if (datePickerRef.current) {
@@ -75,9 +78,17 @@ const Home = () => {
 
     const tasks = useMemo(() => {
         if (storeToDo.tasks) {
-            return storeToDo.tasks.slice(tasksPaginationOffset.from, tasksPaginationOffset.to);
+            return storeToDo.tasks.filter((a) => new Date(a.date * 1000).toLocaleDateString() === datePickerDate.toLocaleDateString());
         }
-    }, [storeToDo.tasks, tasksPaginationOffset]);
+    }, [storeToDo.tasks, tasksPaginationOffset, datePickerDate]);
+
+    const tasksPaginated = useMemo(() => {
+        return tasks.slice(tasksPaginationOffset.from, tasksPaginationOffset.to);
+    }, [tasks]);
+
+    useEffect(() => {
+        dispatch(setPageCount(Math.ceil(tasks.length / config.pagination.pageToShow)));
+    }, [tasksPaginated]);
 
     const datePickerHightlight = useMemo(() => {
         if (storeToDo.tasks) {
@@ -90,7 +101,7 @@ const Home = () => {
                     'day-hightlight__2': [] // Till 10 tasks per day
                 },
                 {
-                    'day-hightlight__3': [] // Till 15+ tasks per day
+                    'day-hightlight__3': [] // Till 10+ tasks per day
                 }
             ];
 
@@ -111,9 +122,9 @@ const Home = () => {
 
                 if (dates.length <= 5) {
                     getHightlight(1).push(...dates);
-                } else if (dates.length <= 10) {
+                } else if (dates.length >= 5 && dates.length <= 10) {
                     getHightlight(2).push(...dates);
-                } else if (dates.length >= 15) {
+                } else if (dates.length > 10) {
                     getHightlight(3).push(...dates);
                 }
 
@@ -121,6 +132,15 @@ const Home = () => {
             }, hightlight);
         }
     }, [storeToDo.tasks]);
+
+    const changeDateHandler = (date) => {
+        setSearchParams({
+            ...params,
+            page: 1,
+            date: date.toLocaleDateString()
+        });
+        setDatePickerDate(date);
+    };
 
     const changePage = (page) => {
         setSearchParams({
@@ -150,7 +170,7 @@ const Home = () => {
                                     onClick={() => setDatePickerShow((prev) => !prev)} 
                                     className="input" 
                                     spellCheck="false" 
-                                    value={dayjs(date).format('YYYY-MM-DD')} 
+                                    value={dayjs(datePickerDate).format('YYYY-MM-DD')} 
                                     readOnly 
                                 />
                             </div>
@@ -159,14 +179,12 @@ const Home = () => {
                     <div className={`home-content__calendar-picker ${datePickerShow ? 'picker-active' : ''}`} style={{ maxHeight: datePickerMaxHeight }}>
                         <DatePicker
                             inline
-                            onFocus={() => console.log(1)}
-                            onBlur={() => console.log(2)}
-                            locale="uk"
-                            showTimeSelect
-                            selected={date}
-                            onChange={(date) => setDate(date)}
+                            locale="en"
+                            // showTimeSelect
+                            selected={datePickerDate}
+                            onChange={(date) => changeDateHandler(date)}
                             highlightDates={datePickerHightlight}
-                            timeCaption="Час"
+                            // timeCaption="Time"
                             ref={datePickerRef}
                         />
                     </div>
@@ -177,15 +195,15 @@ const Home = () => {
                             <Loading1 />
                         </div>
                         :
-                        tasks.length ?
+                        tasksPaginated.length ?
                             <TasksList 
-                                tasks={tasks} 
+                                tasks={tasksPaginated} 
                                 loadingCallback={(status) => setTaskLoading(status)} 
                             />
                             :
                             <div className="home-content__tasks-not__found">
                                 <p>Sorry</p>
-                                <p>We couldn't find anything 😔</p>
+                                <p>We couldn't find anything tasks for today 😔</p>
                             </div>
                     }
                 </div>

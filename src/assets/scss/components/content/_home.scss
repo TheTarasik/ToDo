@@ -28,14 +28,23 @@
                     max-height: 0 !important;
                 }
                 .react-datepicker__day {
+                    &.react-datepicker__day--selected {
+                        background-color: var(--datepicker-date-select);
+                    }
+                    &.react-datepicker__day--keyboard-selected {
+                        background-color: transparent;
+                    }
                     &.day-hightlight__1 {
-                        color: green;
+                        color: var(--goblin);
+                        font-weight: 600;
                     }
                     &.day-hightlight__2 {
-                        color: yellow;
+                        color: var(--meteor);
+                        font-weight: 600;
                     }
                     &.day-hightlight__3 {
-                        color: red;
+                        color: var(--carnation);
+                        font-weight: 600;
                     }
                 }
             }
