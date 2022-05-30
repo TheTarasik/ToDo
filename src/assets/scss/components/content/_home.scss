@@ -27,6 +27,17 @@
                 &:not(.picker-active) {
                     max-height: 0 !important;
                 }
+                .react-datepicker__day {
+                    &.day-hightlight__1 {
+                        color: green;
+                    }
+                    &.day-hightlight__2 {
+                        color: yellow;
+                    }
+                    &.day-hightlight__3 {
+                        color: red;
+                    }
+                }
             }
         }
         &__tasks {

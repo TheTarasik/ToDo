@@ -9,8 +9,7 @@ import { registerLocale } from 'react-datepicker';
 import uk from 'date-fns/locale/uk';
 import ToDo from './components/ToDo';
 
-
-registerLocale('uk', uk)
+registerLocale('uk', uk);
 
 const App = () => {
     return (

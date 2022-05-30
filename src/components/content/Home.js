@@ -10,20 +10,6 @@ import Pagination from '../elements/Pagination';
 import TasksList from './TasksList';
 import Loading1 from '../../assets/images/loadings/Loading-1';
 
-const highlightWithRanges = [
-    {
-        "react-datepicker__day--highlighted-custom-1": [
-            new Date(),
-            new Date(1653313103 * 1000)
-        ],
-    },
-    {
-        "react-datepicker__day--highlighted-custom-2": [
-            new Date()
-        ],
-    },
-];
-
 const Home = () => {
 
     const [date, setDate] = useState(new Date());
@@ -67,12 +53,14 @@ const Home = () => {
 
     useEffect(() => {
         let { page } = params;
+
         page = Number(page);
 
         if (!storeToDo.pageCount) return;
 
         if (isNaN(page) || page <= 0) {
             delete params.page;
+            changePage(1);
             return setSearchParams(params);
         }
 
@@ -90,6 +78,49 @@ const Home = () => {
             return storeToDo.tasks.slice(tasksPaginationOffset.from, tasksPaginationOffset.to);
         }
     }, [storeToDo.tasks, tasksPaginationOffset]);
+
+    const datePickerHightlight = useMemo(() => {
+        if (storeToDo.tasks) {
+            const { tasks } = storeToDo;
+            let hightlight = [
+                {
+                    'day-hightlight__1': [] // Till 5 tasks per day
+                },
+                {
+                    'day-hightlight__2': [] // Till 10 tasks per day
+                },
+                {
+                    'day-hightlight__3': [] // Till 15+ tasks per day
+                }
+            ];
+
+            const uniqueDates = Array.from(
+                new Set(
+                    tasks.map((a) => new Date(a.date * 1000).toLocaleDateString())
+                )
+            );
+
+            return uniqueDates.reduce((a, b) => {
+                const dates = tasks
+                    .filter((a) => new Date(a.date * 1000).toLocaleDateString() === b)
+                    .map((a) => new Date(a.date * 1000));
+                
+                const getHightlight = (hightlight) => {
+                    return Object.values(a.find((a) => a[`day-hightlight__${hightlight}`]))[0];
+                };
+
+                if (dates.length <= 5) {
+                    getHightlight(1).push(...dates);
+                } else if (dates.length <= 10) {
+                    getHightlight(2).push(...dates);
+                } else if (dates.length >= 15) {
+                    getHightlight(3).push(...dates);
+                }
+
+                return a;
+            }, hightlight);
+        }
+    }, [storeToDo.tasks]);
 
     const changePage = (page) => {
         setSearchParams({
@@ -134,7 +165,7 @@ const Home = () => {
                             showTimeSelect
                             selected={date}
                             onChange={(date) => setDate(date)}
-                            highlightDates={highlightWithRanges}
+                            highlightDates={datePickerHightlight}
                             timeCaption="Час"
                             ref={datePickerRef}
                         />
