@@ -1,0 +1,19 @@
+.task-list-item-spoiler-content-animation-enter {
+    opacity: 0;
+}
+
+.task-list-item-spoiler-content-animation-exit {
+    opacity: 1;
+}
+
+.task-list-item-spoiler-content-animation-enter-active {
+    opacity: 1;
+}
+
+.task-list-item-spoiler-content-animation-exit-active {
+    opacity: 0;
+}
+
+.task-list-item-spoiler-content-animation-enter-active, .task-list-item-spoiler-content-animation-exit-active {
+    transition: opacity .5s;
+}

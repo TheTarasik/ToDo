@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { transitionParser } from '../../functions/transitionParser';
 
-const Spoiler = ({ children, header, active = false }) => {
+const Spoiler = ({ children, header, active = false, activeCallback = () => {} }) => {
 
     const [spoilerActive, setSpoilerActive] = useState(active);
     const [spoilerOpenStatus, setSpoilerOpenStatus] = useState('collapse');
@@ -9,7 +9,12 @@ const Spoiler = ({ children, header, active = false }) => {
     const spoilerContentRef = useRef(null);
 
     useEffect(() => {
+        setSpoilerActive(active);
+    }, [active]);
+
+    useEffect(() => {
         spoilerHandler();
+        activeCallback(spoilerActive);
     }, [spoilerActive, spoilerContentRef]);
 
     const spoilerHandler = () => {
