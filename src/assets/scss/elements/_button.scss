@@ -1,0 +1,28 @@
+.button {
+    display: inline-block;
+    background: unset;
+    border: unset;
+    outline: none;
+    user-select: none;
+    text-decoration: none;
+}
+
+.button-loader {
+    display: flex;
+    align-items: center;
+    &.button-loader__active {
+        .button-loader__1 {
+            animation: button-loader-1-animation 2s ease infinite;
+        }
+    }
+}
+
+.button-loader__1 {
+    width: 24px;
+    height: 24px;
+    min-height: 24px;
+    background-repeat: no-repeat;
+    margin: 0 0 0 10px;
+}
+
+@import './button/primary.scss';

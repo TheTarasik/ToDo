@@ -7,6 +7,7 @@
             .input {
                 background-color: var(--input-background);
                 padding: 12px 20px;
+                border: 1px solid transparent;
                 color: var(--text-normal);
                 font-style: normal;
                 font-weight: 400;
@@ -26,7 +27,7 @@
                     } 
                 }
                 .input-wrapper__status-message {
-                    p {
+                    p, span {
                         color: #ff1744;
                     }
                 }

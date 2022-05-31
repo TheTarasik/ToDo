@@ -1,0 +1,21 @@
+.button-primary {
+    background-color: var(--button-primary);
+    padding: 12px 30px;
+    border: 1px solid transparent;
+    transition: opacity .8s ease;
+    color: #fff;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 19px;
+    text-align: center;
+    text-transform: uppercase;
+    cursor: pointer;
+    &:hover {
+        opacity: .85;
+    }
+    &:disabled {
+        opacity: .5;
+        cursor: unset;
+    }
+}

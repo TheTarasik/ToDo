@@ -122,6 +122,14 @@
                                 }
                             }
                         }
+                        .task-list__item-spoiler__header-action__edit-close {
+                            .cross-1 {
+                                display: block;
+                                width: 25px;
+                                height: 25px;
+                                min-width: 25px;
+                            }
+                        }
                     }
                 }
             }

@@ -33,7 +33,9 @@ body {
     margin: auto;
 }
 
-@import './elements/inputs';
+@import './elements/button';
+@import './elements/input';
+@import './elements/checkbox';
 @import './elements/spoiler';
 @import './elements/dropdown';
 @import './elements/pagination';

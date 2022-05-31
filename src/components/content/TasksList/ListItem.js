@@ -3,9 +3,12 @@ import { SwitchTransition, CSSTransition } from 'react-transition-group';
 import taskStatus from '../../../data/taskStatus.js';
 import Spoiler from '../../elements/Spoiler';
 import Dropdown from '../../elements/Dropdown';
+import Information from './ListItem/Information.js';
+import Edit from './ListItem/Edit.js';
 import Dots1 from '../../../assets/images/icons/Dots-1';
 import Pencil1 from '../../../assets/images/icons/Pencil-1';
 import Trash1 from '../../../assets/images/icons/Trash-1';
+import Cross1 from '../../../assets/images/icons/Cross-1';
 
 const ListItem = ({ task, taskDelete }) => {
 
@@ -29,22 +32,39 @@ const ListItem = ({ task, taskDelete }) => {
                             <span>{new Date(task.date * 1000).toLocaleTimeString('uk-UA')}</span>
                         </div>
                         <div className="task-list__item-spoiler__header-action">
-                            <Dropdown 
-                                action={(
-                                    <Dots1 />
-                                )}>
-                                    <div onClick={() => {
-                                            !spoilerActive && setSpoilerActive(true);
+                        <SwitchTransition>
+                            <CSSTransition
+                                key={isEdit}
+                                addEndListener={(node, done) => node.addEventListener('transitionend', done, false)}
+                                classNames="task-list-item-spoiler-header-action-animation">
+                                    {isEdit ?
+                                        <div onClick={() => {
                                             setTimeout(() => {
-                                                setIsEdit(true);
+                                                setIsEdit(false);
                                             }, spoilerActive ? 0 : 500);
-                                        }} className="task-list__item-spoiler__header-action__edit">
-                                            <Pencil1 />
-                                    </div>
-                                    <div onClick={() => taskDelete(task.id)} className="task-list__item-spoiler__header-action__delete">
-                                        <Trash1 />
-                                    </div>
-                            </Dropdown>
+                                        }} className="task-list__item-spoiler__header-action__edit-close">
+                                            <Cross1 />
+                                        </div>
+                                        :
+                                        <Dropdown 
+                                            action={(
+                                                <Dots1 />
+                                            )}>
+                                                <div onClick={() => {
+                                                        setSpoilerActive(true);
+                                                        setTimeout(() => {
+                                                            setIsEdit(true);
+                                                        }, spoilerActive ? 0 : 500);
+                                                    }} className="task-list__item-spoiler__header-action__edit">
+                                                        <Pencil1 />
+                                                </div>
+                                                <div onClick={() => taskDelete(task.id)} className="task-list__item-spoiler__header-action__delete">
+                                                    <Trash1 />
+                                                </div>
+                                        </Dropdown>
+                                    }
+                                </CSSTransition>
+                            </SwitchTransition>
                         </div>
                     </div>
                 )}>
@@ -52,21 +72,12 @@ const ListItem = ({ task, taskDelete }) => {
                         <SwitchTransition>
                             <CSSTransition
                                 key={isEdit}
-                                addEndListener={(node, done) => node.addEventListener("transitionend", done, false)}
+                                addEndListener={(node, done) => node.addEventListener('transitionend', done, false)}
                                 classNames="task-list-item-spoiler-content-animation">
                                     {isEdit ?
-                                        <div className="task-list__item-spoiler__content-edit">
-                                            123
-                                        </div>
+                                        <Edit task={task} />
                                         :
-                                        <div className="task-list__item-spoiler__content-information">
-                                            <div className="task-list__item-spoiler__content-information__description">
-                                                <p>{task.desciption ? task.desciption : <span className="description-unset">No description set</span>}</p>
-                                            </div>
-                                            <div className="task-list__item-spoiler__content-information__image">
-                                                <img src={task.image ? task.image : require('../../../assets/images/image-default.png')} alt="Task preview" />
-                                            </div>
-                                        </div>
+                                        <Information task={task} />
                                     }
                             </CSSTransition>
                         </SwitchTransition>
