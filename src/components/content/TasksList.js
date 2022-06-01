@@ -21,7 +21,7 @@ const TasksList = ({ tasks, loadingCallback }) => {
 
             // Must return from backend the status true/false
             if (deleteTask.status !== 200) {
-                return console.log('Something went wrong!')
+                return alert('Something went wrong!');
             }
 
             const getTasks = await apiPublic('/tasks');
@@ -31,7 +31,7 @@ const TasksList = ({ tasks, loadingCallback }) => {
             dispatch(setPageCount(Math.ceil(tasks.length / config.pagination.pageToShow)));
             dispatch(setTasks(tasks));
         } catch (e) {
-            console.log(e);
+            alert(`Something went wrong: ${e.message}`);
         } finally {
             loadingCallback(false);
         }

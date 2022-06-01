@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 const DEFAULT_OPTIONS = {
     config: { attributes: true, childList: true, subtree: true },

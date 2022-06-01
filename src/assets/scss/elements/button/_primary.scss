@@ -18,4 +18,7 @@
         opacity: .5;
         cursor: unset;
     }
+    &.button-loader__active {
+        pointer-events: none;
+    }
 }

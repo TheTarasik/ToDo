@@ -3,14 +3,12 @@
     width: 20px;
     height: 20px;
     min-width: 20px;
-    background-color: #e9e4df;
     border-radius: 4px;
     transition: background-color .3s ease;
     cursor: pointer;
     appearance: none;
     outline: none;
     &:checked {
-        background-color: #2e2a26;;
         &::before {
             opacity: 1;
         }
@@ -38,8 +36,6 @@
     cursor: pointer;
     span {
         padding: 0 0 0 10px;
-        color: #4f4f4f;
-        font-family: 'Roboto';
         font-style: normal;
         font-weight: normal;
         font-size: 16px;
@@ -47,4 +43,4 @@
     }
 }
 
-@import './checkbox-radio/primary.scss';
+@import './checkbox-radio/primary';

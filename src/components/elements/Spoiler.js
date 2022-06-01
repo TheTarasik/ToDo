@@ -14,7 +14,7 @@ const Spoiler = ({ children, header, active = false, activeCallback = () => {} }
 
     const onSpoilerContentMutation = useCallback(
         () => {
-            setSpoilerMaxHeight(spoilerContentRef.current.scrollHeight);
+            setSpoilerMaxHeight(spoilerContentRef.current?.scrollHeight);
         },
         []
     );

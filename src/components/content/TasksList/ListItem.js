@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { SwitchTransition, CSSTransition } from 'react-transition-group';
-import taskStatus from '../../../data/taskStatus.js';
+import tasksStatus from '../../../data/tasksStatus.js';
 import Spoiler from '../../elements/Spoiler';
 import Dropdown from '../../elements/Dropdown';
 import Information from './ListItem/Information.js';
@@ -15,6 +15,16 @@ const ListItem = ({ task, taskDelete }) => {
     const [isEdit, setIsEdit] = useState(false);
     const [spoilerActive, setSpoilerActive] = useState(false);
 
+    useEffect(() => {
+        if (!spoilerActive) {
+            isEdit && setIsEdit(false);
+        }
+    }, [spoilerActive]);
+
+    const findTaskStatus = (id) => {
+        return tasksStatus.find((a) => a.id === id);
+    };
+
     return (
         <li className="tasks-list__item">
             <Spoiler
@@ -23,7 +33,7 @@ const ListItem = ({ task, taskDelete }) => {
                 header={(
                     <div className="task-list__item-spoiler__header">
                         <div className="task-list__item-spoiler__header-status">
-                            <span className={taskStatus[task.is_status]?.className}></span>
+                            <span className={findTaskStatus(task.is_status)?.className}></span>
                         </div>
                         <div className="task-list__item-spoiler__header-title">
                             <span>{task.title}</span>

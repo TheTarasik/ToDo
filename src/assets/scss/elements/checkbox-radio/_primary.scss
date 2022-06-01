@@ -1,0 +1,22 @@
+.checkbox-wrapper {
+    &.checkbox-radio__primary {
+        .checkbox {
+            background-color: var(--checkbox-radio-primary-background);
+            border-radius: 100%;
+            &:checked {
+                &::before {
+                    width: 10px;
+                    height: 10px;
+                    background-color: var(--checkbox-radio-primary-checked);
+                    background-image: unset;
+                    border-radius: 100%;
+                }
+            }
+        }
+        .checkbox-wrapper__label {
+            span {
+                color: var(--text-normal);
+            }
+        }
+    }
+}
