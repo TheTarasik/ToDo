@@ -3,7 +3,6 @@ import { useDispatch } from 'react-redux';
 import { setPageCount, setTasks } from '../../redux/reducers/todo.js';
 import useAPI from '../../hooks/useAPI.js';
 import config from '../../config.js';
-
 import ListItem from './TasksList/ListItem.js';
 
 const TasksList = ({ tasks, loadingCallback }) => {

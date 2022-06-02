@@ -1,0 +1,51 @@
+.task-manager {
+    &__content {
+        &-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 15px;
+            &__inputs {
+                &-image__preview {
+                    height: 200px;
+                    img {
+                        display: block;
+                        width: 100%;
+                        height: 100%;
+                        max-width: 200px;
+                        object-fit: contain;
+                    }
+                }
+            }
+            &__checkbox-radio {
+                display: flex;
+                gap: 15px;
+            }
+            &__calendar {
+                .react-datepicker__day {
+                    &.react-datepicker__day--selected {
+                        background-color: var(--datepicker-date-select);
+                    }
+                    &.react-datepicker__day--keyboard-selected {
+                        background-color: transparent;
+                    }
+                    // &.day-hightlight__1 {
+                    //     color: var(--goblin);
+                    //     font-weight: 600;
+                    // }
+                    // &.day-hightlight__2 {
+                    //     color: var(--meteor);
+                    //     font-weight: 600;
+                    // }
+                    // &.day-hightlight__3 {
+                    //     color: var(--carnation);
+                    //     font-weight: 600;
+                    // }
+                }
+            }
+            &__action {
+
+            }
+        }
+    }
+}

@@ -78,7 +78,9 @@ const Edit = ({ task }) => {
                     dispatch(setPageCount(Math.ceil(tasks.length / config.pagination.pageToShow)));
                     dispatch(setTasks(tasks));
 
-                    alert('Changes saved successfully');
+                    setButtonSubmitDisabled(true);
+
+                    alert('Changes saved successfully.');
                 } catch (e) {
                     alert(`Something went wrong: ${e.message}`);
                 } finally {
@@ -148,23 +150,26 @@ const Edit = ({ task }) => {
                         validation={{
                             length: {
                                 max: {
-                                    value: 1000,
+                                    validOnMount: true,
+                                    value: 2000,
                                     message: {
                                         code: 1,
-                                        text: 'Maximum length is 1000 characters'
+                                        text: 'Maximum length is 2000 characters'
                                     }
                                 }
                             }
                         }}
                         validationCallback={(validation) => setImage(validation)}
                     />
-                    <div className="task-list__item-spoiler__content-edit__form-inputs__image-preview">
-                        <img 
-                            onError={(e) => e.target.src = require('../../../../assets/images/image-default.png')} 
-                            src={image?.value} 
-                            alt="Task preview"
-                        />
-                    </div>
+                    {image?.value &&
+                        <div className="task-list__item-spoiler__content-edit__form-inputs__image-preview">
+                            <img 
+                                onError={(e) => e.target.src = require('../../../../assets/images/image-default.png')} 
+                                src={image?.value} 
+                                alt="Task preview"
+                            />
+                        </div>
+                    }
                 </div>
                 <div className="task-list__item-spoiler__content-edit__form-checkbox__radio">
                     {tasksStatus.map((status) => (

@@ -1,5 +1,6 @@
 import Home from '../components/content/Home';
 import Archive from '../components/content/Archive';
+import TaskManager from '../components/TaskManager';
 
 export const toDoPublicRoutes = [
     {
@@ -18,6 +19,6 @@ export const toDoPublicRoutes = [
         path: 'task-manager',
         name: 'task-manager',
         title: 'Task manager',
-        element: <Home />
+        element: <TaskManager />
     }
 ];
