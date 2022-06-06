@@ -5,7 +5,7 @@ import useAPI from '../../hooks/useAPI.js';
 import config from '../../config.js';
 import ListItem from './TasksList/ListItem.js';
 
-const TasksList = ({ tasks, loadingCallback }) => {
+const TasksList = ({ tasks, loadingCallback, action }) => {
 
     const dispatch = useDispatch();
     const { apiPublic } = useAPI();
@@ -36,6 +36,42 @@ const TasksList = ({ tasks, loadingCallback }) => {
         }
     };
 
+    const updateTask = async (taskId, data) => {
+        try {
+            loadingCallback(true);
+
+            const findTask = tasks.find((a) => a.id === taskId);
+
+            if (findTask) {
+                const updateTask = await apiPublic(`/tasks/${taskId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    data: JSON.stringify(data)
+                });
+
+                // Must return from backend the status true/false
+                if (updateTask.status !== 200) {
+                    return alert('Something went wrong!');
+                }
+
+                const getTasks = await apiPublic('/tasks');
+
+                const { data: tasks } = getTasks;
+
+                dispatch(setPageCount(Math.ceil(tasks.length / config.pagination.pageToShow)));
+                dispatch(setTasks(tasks));
+
+                alert('Changes saved successfully.');
+            }
+        } catch (e) {
+            alert(`Something went wrong: ${e.message}`);
+        } finally {
+            loadingCallback(false);
+        }
+    };
+
     return (
         <ul className="tasks-list">
             {tasks &&
@@ -43,7 +79,9 @@ const TasksList = ({ tasks, loadingCallback }) => {
                     <ListItem
                         key={task.id}
                         task={task}
-                        taskDelete={taskDelete} />
+                        taskDelete={taskDelete}
+                        updateTask={updateTask}
+                        action={action} />
                 ))
             }
         </ul>
