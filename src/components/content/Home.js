@@ -51,7 +51,7 @@ const Home = () => {
                             });
 
                             // Must return from backend the status true/false
-                            if (updateTask.status !== 200) {
+                            if (moveTaskToArchive.status !== 200) {
                                 console.log(`Move task id-${tasks[task].id} to archive failed`);
                             }
 
