@@ -50,6 +50,11 @@ const Home = () => {
                                 is_archive: true
                             });
 
+                            // Must return from backend the status true/false
+                            if (updateTask.status !== 200) {
+                                console.log(`Move task id-${tasks[task].id} to archive failed`);
+                            }
+
                             tasks[task].is_archive = true;
                             console.log(`Move task id-${tasks[task].id} to archive`);
                     }
