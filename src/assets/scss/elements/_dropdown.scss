@@ -17,5 +17,6 @@
         transition: transform .3s ease, opacity .2s ease;
         opacity: 0;
         pointer-events: none;
+        z-index: 1;
     }
 }

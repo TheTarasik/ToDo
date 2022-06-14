@@ -23,6 +23,8 @@ const ListItem = ({ task, taskDelete, updateTask, action }) => {
         if (!task.isActive) {
             task.isEdit && setTaskIsEdit(false);
         }
+
+        console.log(task);
     }, [task.isActive]);
 
     const findTaskStatus = (id) => {
@@ -106,7 +108,7 @@ const ListItem = ({ task, taskDelete, updateTask, action }) => {
                                                             <Pencil1 />
                                                     </div>
                                                 }
-                                                {action?.archive && task.is_status === 1 &&
+                                                {action?.archive &&
                                                     task.is_archive ?
                                                         <div onClick={() => updateTask(task.id, {
                                                                 is_archive: false,
