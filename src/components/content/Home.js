@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setTasks, setPageCount } from '../../redux/reducers/todo';
 import DatePicker from 'react-datepicker';
+import { NotificationManager } from 'react-notifications';
 import dayjs from 'dayjs';
 import useAPI from '../../hooks/useAPI';
 import config from '../../config';
@@ -62,7 +63,7 @@ const Home = () => {
 
                 dispatch(setTasks(tasks));
             } catch (e) {
-                alert(`Something went wrong: ${e.message}`);
+                NotificationManager.error(`Something went wrong: ${e.message}`, 'ToDo');
             } finally {
                 setTaskLoading(false);
             }

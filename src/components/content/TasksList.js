@@ -56,7 +56,7 @@ const TasksList = ({ tasks, loadingCallback, action }) => {
 
                 // Must return from backend the status true/false
                 if (updateTask.status !== 200) {
-                    return alert('Something went wrong!');
+                    return NotificationManager.error('Something went wrong...', 'ToDo');
                 }
 
                 const getTasks = await apiPublic('/tasks');
@@ -66,10 +66,10 @@ const TasksList = ({ tasks, loadingCallback, action }) => {
                 dispatch(setPageCount(Math.ceil(tasks.length / config.pagination.pageToShow)));
                 dispatch(setTasks(tasks));
 
-                alert('Changes saved successfully.');
+                NotificationManager.success('Changes saved successfully.', 'ToDo');
             }
         } catch (e) {
-            alert(`Something went wrong: ${e.message}`);
+            NotificationManager.error(`Something went wrong: ${e.message}`, 'ToDo');
         } finally {
             loadingCallback(false);
         }

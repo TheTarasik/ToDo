@@ -96,14 +96,31 @@ const ListItem = ({ task, taskDelete, updateTask, action }) => {
                                             action={(
                                                 <Dots1 />
                                             )}>
-                                                <div onClick={() => {
-                                                        setTaskIsActive(true);
-                                                        setTimeout(() => {
-                                                            setTaskIsEdit(true);
-                                                        }, task.isActive ? 0 : 500);
-                                                    }} className="task-list__item-spoiler__header-action__edit">
-                                                        <Pencil1 />
-                                                </div>
+                                                {action?.edit === undefined && action?.edit !== false &&
+                                                    <div onClick={() => {
+                                                            setTaskIsActive(true);
+                                                            setTimeout(() => {
+                                                                setTaskIsEdit(true);
+                                                            }, task.isActive ? 0 : 500);
+                                                        }} className="task-list__item-spoiler__header-action__edit">
+                                                            <Pencil1 />
+                                                    </div>
+                                                }
+                                                {action?.archive && task.is_status === 1 &&
+                                                    task.is_archive ?
+                                                        <div onClick={() => updateTask(task.id, {
+                                                                is_archive: false,
+                                                                created_at: Math.floor(new Date().getTime() / 1000)
+                                                        })} className="task-list__item-spoiler__header-action__move-from__archive">
+                                                            <MoveFromArchive1 />
+                                                        </div>
+                                                        :
+                                                        <div onClick={() => updateTask(task.id, {
+                                                            is_archive: true
+                                                        })} className="task-list__item-spoiler__header-action__move-to__archive">
+                                                            <MoveToArchive1 />
+                                                        </div>
+                                                }
                                                 <div onClick={() => taskDelete(task.id)} className="task-list__item-spoiler__header-action__delete">
                                                     <Trash1 />
                                                 </div>
