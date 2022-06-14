@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { setTasks, setPageCount } from '../redux/reducers/todo';
 import DatePicker from 'react-datepicker';
+import { NotificationManager } from 'react-notifications';
 import tasksStatus from '../data/tasksStatus';
 import useAPI from '../hooks/useAPI';
 import config from '../config';
@@ -41,6 +42,7 @@ const TaskManager = () => {
             description.valid &&
             image.valid) {
                 try {
+                    setButtonSubmitDisabled(true);
                     setButtonSubmitLoading(true);
 
                     const addTask = await apiPublic(`/tasks`, {
@@ -59,7 +61,7 @@ const TaskManager = () => {
 
                     // Must return from backend the status true/false
                     if (addTask.status !== 201) {
-                        return alert('Something went wrong!');
+                        return NotificationManager.error('Something went wrong...', 'ToDo');
                     }
 
                     const getTasks = await apiPublic('/tasks');
@@ -69,16 +71,19 @@ const TaskManager = () => {
                     dispatch(setPageCount(Math.ceil(tasks.length / config.pagination.pageToShow)));
                     dispatch(setTasks(tasks));
 
-                    setButtonSubmitDisabled(true);
+                    title.clear();
+                    description.clear();
+                    image.clear();
 
-                    alert('Task added successfully.');
+                    NotificationManager.success('Task added successfully.', 'ToDo');
                 } catch (e) {
-                    alert(`Something went wrong: ${e.message}`);
+                    NotificationManager.error(`Something went wrong: ${e.message}`, 'ToDo');
                 } finally {
+                    setButtonSubmitDisabled(false);
                     setButtonSubmitLoading(false);
                 }
         } else {
-            console.log('Check the correctness of the data in the fields.');
+            NotificationManager.warning('Check the correctness of the data in the fields.', 'ToDo');
         }
     };
 

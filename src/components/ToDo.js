@@ -1,4 +1,5 @@
 import React from 'react';
+import { NotificationContainer } from 'react-notifications';
 import Menu from './Menu';
 import Content from './Content';
 
@@ -10,6 +11,7 @@ const ToDo = () => {
                 <Menu />
                 <Content />
             </div>
+            <NotificationContainer />
         </div>
     );
 };

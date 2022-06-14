@@ -12,6 +12,13 @@ const Input = ({ onChange= () => {}, onFocus = () => {}, onBlur = () => {}, them
             show: null,
             code: 0,
             text: ''
+        },
+        clear: () => {
+            setInputValidation((prev) => ({
+                ...prev,
+                mount: false
+            }));
+            setInputValue('');
         }
     });
     
@@ -22,7 +29,7 @@ const Input = ({ onChange= () => {}, onFocus = () => {}, onBlur = () => {}, them
     }, [inputValue]); 
 
     useEffect(() => {
-        validationCallback({ ...inputValidation, value: inputValue, textInput: inputRef });
+        validationCallback({ ...inputValidation, value: inputValue, input: inputRef });
     }, [inputValidation]);
 
     useEffect(() => {
@@ -169,7 +176,8 @@ const Input = ({ onChange= () => {}, onFocus = () => {}, onBlur = () => {}, them
                     className="input input-full__width" 
                     placeholder={placeholder} 
                     spellCheck="false" 
-                    value={inputValue} 
+                    value={inputValue}
+                    ref={inputRef}
                 />
                 <div className="input-wrapper__content-append">
                     {append}

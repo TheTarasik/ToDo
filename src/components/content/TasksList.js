@@ -1,6 +1,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { setPageCount, setTasks } from '../../redux/reducers/todo.js';
+import { NotificationManager } from 'react-notifications';
 import useAPI from '../../hooks/useAPI.js';
 import config from '../../config.js';
 import ListItem from './TasksList/ListItem.js';
@@ -20,7 +21,7 @@ const TasksList = ({ tasks, loadingCallback }) => {
 
             // Must return from backend the status true/false
             if (deleteTask.status !== 200) {
-                return alert('Something went wrong!');
+                return NotificationManager.error('Something went wrong...', 'ToDo');
             }
 
             const getTasks = await apiPublic('/tasks');
@@ -29,8 +30,10 @@ const TasksList = ({ tasks, loadingCallback }) => {
 
             dispatch(setPageCount(Math.ceil(tasks.length / config.pagination.pageToShow)));
             dispatch(setTasks(tasks));
+
+            NotificationManager.success('Task deleted successfully.', 'ToDo');
         } catch (e) {
-            alert(`Something went wrong: ${e.message}`);
+            NotificationManager.error(`Something went wrong: ${e.message}`, 'ToDo');
         } finally {
             loadingCallback(false);
         }

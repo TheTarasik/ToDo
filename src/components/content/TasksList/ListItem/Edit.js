@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { setPageCount, setTasks } from '../../../../redux/reducers/todo';
 import DatePicker from 'react-datepicker';
+import { NotificationManager } from 'react-notifications';
 import tasksStatus from '../../../../data/tasksStatus';
 import useAPI from '../../../../hooks/useAPI';
 import config from '../../../../config';
@@ -68,7 +69,7 @@ const Edit = ({ task }) => {
 
                     // Must return from backend the status true/false
                     if (updateTask.status !== 200) {
-                        return alert('Something went wrong!');
+                        return NotificationManager.error('Something went wrong...', 'ToDo');
                     }
 
                     const getTasks = await apiPublic('/tasks');
@@ -80,14 +81,14 @@ const Edit = ({ task }) => {
 
                     setButtonSubmitDisabled(true);
 
-                    alert('Changes saved successfully.');
+                    NotificationManager.success('Changes saved successfully.', 'ToDo');
                 } catch (e) {
-                    alert(`Something went wrong: ${e.message}`);
+                    NotificationManager.error(`Something went wrong: ${e.message}`, 'ToDo');
                 } finally {
                     setButtonSubmitLoading(false);
                 }
         } else {
-            console.log('Check the correctness of the data in the fields.');
+            NotificationManager.warning('Check the correctness of the data in the fields.', 'ToDo');
         }
     };
 
