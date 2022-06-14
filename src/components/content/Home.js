@@ -36,18 +36,39 @@ const Home = () => {
     const params = Object.fromEntries([...searchParams]);
 
     useEffect(() => {
-        apiPublic('/tasks') 
-            .then((data) => {
-                const { data: tasks } = data;
+        const getTasks = async () => {
+            try {
+                const getTasks = await apiPublic('/tasks');
+    
+                const { data: tasks } = getTasks;
+    
+                for (const task in tasks) {
+                    if (!tasks[task].is_archive &&
+                        tasks[task].is_status === 1 &&
+                        new Date(tasks[task].created_at * 1000).toLocaleDateString() !== new Date().toLocaleDateString()) {
+                            const moveTaskToArchive = await apiPublic.put(`/tasks/${tasks[task].id}`, {
+                                is_archive: true
+                            });
+
+                            // Must return from backend the status true/false
+                            if (moveTaskToArchive.status !== 200) {
+                                console.log(`Move task id-${tasks[task].id} to archive failed`);
+                            }
+
+                            tasks[task].is_archive = true;
+                            console.log(`Move task id-${tasks[task].id} to archive`);
+                    }
+                }
 
                 dispatch(setTasks(tasks));
-            })
-            .catch((e) => {
-                console.log(e);
-            })
-            .finally(() => {
+            } catch (e) {
+                alert(`Something went wrong: ${e.message}`);
+            } finally {
                 setTaskLoading(false);
-            });
+            }
+        };
+
+        getTasks();
     }, []);
 
     useEffect(() => {
@@ -78,7 +99,8 @@ const Home = () => {
 
     const tasks = useMemo(() => {
         if (storeToDo.tasks) {
-            return storeToDo.tasks.filter((a) => new Date(a.date * 1000).toLocaleDateString() === datePickerDate.toLocaleDateString());
+            return storeToDo.tasks.filter((a) => new Date(a.date * 1000).toLocaleDateString() === datePickerDate.toLocaleDateString() &&
+            !a.is_archive);
         }
     }, [storeToDo.tasks, tasksPaginationOffset, datePickerDate]);
 
@@ -93,6 +115,7 @@ const Home = () => {
     const datePickerHightlight = useMemo(() => {
         if (storeToDo.tasks) {
             const { tasks } = storeToDo;
+
             let hightlight = [
                 {
                     'day-hightlight__1': [] // Till 5 tasks per day
@@ -113,7 +136,7 @@ const Home = () => {
 
             return uniqueDates.reduce((a, b) => {
                 const dates = tasks
-                    .filter((a) => new Date(a.date * 1000).toLocaleDateString() === b)
+                    .filter((a) => new Date(a.date * 1000).toLocaleDateString() === b && !a.is_archive)
                     .map((a) => new Date(a.date * 1000));
                 
                 const getHightlight = (hightlight) => {
@@ -198,7 +221,10 @@ const Home = () => {
                         tasksPaginated.length ?
                             <TasksList 
                                 tasks={tasksPaginated} 
-                                loadingCallback={(status) => setTaskLoading(status)} 
+                                loadingCallback={(status) => setTaskLoading(status)}
+                                action={{
+                                    archive: true
+                                }}
                             />
                             :
                             <div className="home-content__tasks-not__found">

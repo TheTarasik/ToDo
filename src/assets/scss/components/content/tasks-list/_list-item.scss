@@ -102,6 +102,42 @@
                                         }
                                     }
                                 }
+                                .task-list__item-spoiler__header-action__move-to__archive {
+                                    margin: 0 5px;
+                                    .move-to__archive-1 {
+                                        display: block;
+                                        width: 25px;
+                                        height: 25px;
+                                        min-width: 25px;
+                                        &:hover {
+                                            path {
+                                                opacity: .8;
+                                            }
+                                        }
+                                        path {
+                                            fill: var(--goblin);
+                                            transition: opacity .3s ease;
+                                        }
+                                    }
+                                }
+                                .task-list__item-spoiler__header-action__move-from__archive {
+                                    margin: 0 5px;
+                                    .move-from__archive-1 {
+                                        display: block;
+                                        width: 25px;
+                                        height: 25px;
+                                        min-width: 25px;
+                                        &:hover {
+                                            path {
+                                                opacity: .8;
+                                            }
+                                        }
+                                        path {
+                                            fill: var(--meteor);
+                                            transition: opacity .3s ease;
+                                        }
+                                    }
+                                }
                                 .task-list__item-spoiler__header-action__delete {
                                     margin: 5px;
                                     .trash-1 {

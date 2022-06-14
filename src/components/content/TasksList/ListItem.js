@@ -9,10 +9,12 @@ import Information from './ListItem/Information.js';
 import Edit from './ListItem/Edit.js';
 import Dots1 from '../../../assets/images/icons/Dots-1';
 import Pencil1 from '../../../assets/images/icons/Pencil-1';
+import MoveToArchive1 from '../../../assets/images/icons/MoveToArchive-1';
+import MoveFromArchive1 from '../../../assets/images/icons/MoveFromArchive-1';
 import Trash1 from '../../../assets/images/icons/Trash-1';
 import Cross1 from '../../../assets/images/icons/Cross-1';
 
-const ListItem = ({ task, taskDelete }) => {
+const ListItem = ({ task, taskDelete, updateTask, action }) => {
 
     const storeToDo = useSelector((state) => state.todo);
     const dispatch = useDispatch();
@@ -94,6 +96,7 @@ const ListItem = ({ task, taskDelete }) => {
                                             action={(
                                                 <Dots1 />
                                             )}>
+<<<<<<< HEAD
                                                 <div onClick={() => {
                                                         setTaskIsActive(true);
                                                         setTimeout(() => {
@@ -102,6 +105,33 @@ const ListItem = ({ task, taskDelete }) => {
                                                     }} className="task-list__item-spoiler__header-action__edit">
                                                         <Pencil1 />
                                                 </div>
+=======
+                                                {action?.edit === undefined && action?.edit !== false &&
+                                                    <div onClick={() => {
+                                                            setSpoilerActive(true);
+                                                            setTimeout(() => {
+                                                                setIsEdit(true);
+                                                            }, spoilerActive ? 0 : 500);
+                                                        }} className="task-list__item-spoiler__header-action__edit">
+                                                            <Pencil1 />
+                                                    </div>
+                                                }
+                                                {action?.archive && task.is_status === 1 &&
+                                                    task.is_archive ?
+                                                        <div onClick={() => updateTask(task.id, {
+                                                                is_archive: false,
+                                                                created_at: Math.floor(new Date().getTime() / 1000)
+                                                        })} className="task-list__item-spoiler__header-action__move-from__archive">
+                                                            <MoveFromArchive1 />
+                                                        </div>
+                                                        :
+                                                        <div onClick={() => updateTask(task.id, {
+                                                            is_archive: true
+                                                        })} className="task-list__item-spoiler__header-action__move-to__archive">
+                                                            <MoveToArchive1 />
+                                                        </div>
+                                                }
+>>>>>>> 6dc64d6fb5838c858d9dbf70408af91c854e1f30
                                                 <div onClick={() => taskDelete(task.id)} className="task-list__item-spoiler__header-action__delete">
                                                     <Trash1 />
                                                 </div>
