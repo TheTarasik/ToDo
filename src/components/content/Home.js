@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useMemo } from 'react';
+import React, { useState, useRef, useEffect, useMemo, Fragment } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setTasks, setPageCount } from '../../redux/reducers/todo';
@@ -8,6 +8,7 @@ import dayjs from 'dayjs';
 import useAPI from '../../hooks/useAPI';
 import config from '../../config';
 import Pagination from '../elements/Pagination';
+import Sort from './Sort';
 import TasksList from './TasksList';
 import Loading1 from '../../assets/images/loadings/Loading-1';
 
@@ -100,10 +101,20 @@ const Home = () => {
 
     const tasks = useMemo(() => {
         if (storeToDo.tasks) {
-            return storeToDo.tasks.filter((a) => new Date(a.date * 1000).toLocaleDateString() === datePickerDate.toLocaleDateString() &&
+            let tasks = storeToDo.tasks.filter((a) => new Date(a.date * 1000).toLocaleDateString() === datePickerDate.toLocaleDateString() &&
             !a.is_archive);
+
+            if (storeToDo.sort.includes('date')) {
+                tasks.sort((a, b) => new Date(a.date) * 1000 - new Date(b.date * 1000));
+            }
+
+            if (storeToDo.sort.includes('status')) {
+                tasks.sort((a, b) => a.is_status - b.is_status);
+            }
+
+            return tasks;
         }
-    }, [storeToDo.tasks, tasksPaginationOffset, datePickerDate]);
+    }, [storeToDo.tasks, tasksPaginationOffset, datePickerDate, storeToDo.sort]);
 
     const tasksPaginated = useMemo(() => {
         return tasks.slice(tasksPaginationOffset.from, tasksPaginationOffset.to);
@@ -214,19 +225,25 @@ const Home = () => {
                     </div>
                 </div>
                 <div className="home-content__tasks">
+                    {tasks.length > 1 &&
+                        <Sort />
+                    }
                     {tasksLoading ?
                         <div className="home-content__tasks-loading">
                             <Loading1 />
                         </div>
                         :
                         tasksPaginated.length ?
-                            <TasksList 
-                                tasks={tasksPaginated} 
-                                loadingCallback={(status) => setTaskLoading(status)}
-                                action={{
-                                    archive: true
-                                }}
-                            />
+                            <Fragment>
+                                
+                                <TasksList 
+                                    tasks={tasksPaginated} 
+                                    loadingCallback={(status) => setTaskLoading(status)}
+                                    action={{
+                                        archive: true
+                                    }}
+                                />
+                            </Fragment>
                             :
                             <div className="home-content__tasks-not__found">
                                 <p>Sorry</p>

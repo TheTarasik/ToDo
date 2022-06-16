@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeTask } from '../../../redux/reducers/todo.js';
 import { SwitchTransition, CSSTransition } from 'react-transition-group';
+import ReactTooltip from 'react-tooltip';
 import tasksStatus from '../../../data/tasksStatus.js';
 import Spoiler from '../../elements/Spoiler';
 import Dropdown from '../../elements/Dropdown';
@@ -23,8 +24,6 @@ const ListItem = ({ task, taskDelete, updateTask, action }) => {
         if (!task.isActive) {
             task.isEdit && setTaskIsEdit(false);
         }
-
-        console.log(task);
     }, [task.isActive]);
 
     const findTaskStatus = (id) => {
@@ -104,7 +103,7 @@ const ListItem = ({ task, taskDelete, updateTask, action }) => {
                                                             setTimeout(() => {
                                                                 setTaskIsEdit(true);
                                                             }, task.isActive ? 0 : 500);
-                                                        }} className="task-list__item-spoiler__header-action__edit">
+                                                        }} className="task-list__item-spoiler__header-action__edit" data-tip="Edit task">
                                                             <Pencil1 />
                                                     </div>
                                                 }
@@ -113,19 +112,20 @@ const ListItem = ({ task, taskDelete, updateTask, action }) => {
                                                         <div onClick={() => updateTask(task.id, {
                                                                 is_archive: false,
                                                                 created_at: Math.floor(new Date().getTime() / 1000)
-                                                        })} className="task-list__item-spoiler__header-action__move-from__archive">
+                                                        })} className="task-list__item-spoiler__header-action__move-from__archive" data-tip="Move from archive">
                                                             <MoveFromArchive1 />
                                                         </div>
                                                         :
                                                         <div onClick={() => updateTask(task.id, {
                                                             is_archive: true
-                                                        })} className="task-list__item-spoiler__header-action__move-to__archive">
+                                                        })} className="task-list__item-spoiler__header-action__move-to__archive" data-tip="Move to archive">
                                                             <MoveToArchive1 />
                                                         </div>
                                                 }
-                                                <div onClick={() => taskDelete(task.id)} className="task-list__item-spoiler__header-action__delete">
+                                                <div onClick={() => taskDelete(task.id)} className="task-list__item-spoiler__header-action__delete" data-tip="Delete task">
                                                     <Trash1 />
                                                 </div>
+                                                <ReactTooltip />
                                         </Dropdown>
                                     }
                                 </CSSTransition>

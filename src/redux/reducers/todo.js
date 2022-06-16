@@ -2,12 +2,14 @@ import { createAction, createReducer } from '@reduxjs/toolkit';
 
 const initialState = {
      tasks: [],
-     pageCount: null
+     pageCount: null,
+     sort: []
 };
 
 export const setTasks = createAction('SET_TASKS');
 export const changeTask = createAction('CHANGE_TASK');
 export const setPageCount = createAction('SET_PAGE_COUNT');
+export const setSortType = createAction('SET_SORT_TYPE');
 
 export default createReducer(initialState, {
     [setTasks]: (state, action) => {
@@ -34,5 +36,11 @@ export default createReducer(initialState, {
     },
     [setPageCount]: (state, action) => {
         state.pageCount = action.payload;
+    },
+    [setSortType]: (state, action) => {
+        state.sort.includes(action.payload.type) ? 
+            state.sort = state.sort.filter((a) => a !== action.payload.type)
+            : 
+            state.sort.push(action.payload.type);
     }
 });

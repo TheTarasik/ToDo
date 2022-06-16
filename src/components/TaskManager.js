@@ -3,11 +3,9 @@ import { useDispatch } from 'react-redux';
 import { setTasks, setPageCount } from '../redux/reducers/todo';
 import DatePicker from 'react-datepicker';
 import { NotificationManager } from 'react-notifications';
-import tasksStatus from '../data/tasksStatus';
 import useAPI from '../hooks/useAPI';
 import config from '../config';
 import Input from './elements/Input';
-import CheckboxRadio from './elements/CheckboxRadio';
 import Refresh1 from '../assets/images/icons/Refresh-1';
 
 const TaskManager = () => {
@@ -15,8 +13,6 @@ const TaskManager = () => {
     const [title, setTitle] = useState(null);
     const [description, setDescription] = useState(null);
     const [image, setImage] = useState(null);
-
-    const [status, setStatus] = useState(0);
 
     const [datePickerDate, setDatePickerDate] = useState(new Date());
 
@@ -55,7 +51,7 @@ const TaskManager = () => {
                             description: description.value,
                             image: image.value,
                             date: Math.floor(datePickerDate.getTime() / 1000),
-                            is_status: status
+                            is_status: 0
                         })
                     });
 
@@ -164,18 +160,6 @@ const TaskManager = () => {
                                 />
                             </div>
                         }
-                    </div>
-                    <div className="task-manager__content-form__checkbox-radio">
-                        {tasksStatus.map((status) => (
-                            <CheckboxRadio
-                                key={status.id}
-                                onChange={() => setStatus(status.id)}
-                                id={`taskListEditTaskStatus-${status.className}`}
-                                name="taskListEditTaskStatus"
-                                label={status.title}
-                                defaultChecked={status.id === 0}
-                            />
-                        ))}
                     </div>
                     <div className="task-manager__content-form__calendar">
                         <DatePicker
